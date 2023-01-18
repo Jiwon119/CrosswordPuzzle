@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Model.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="LogID" />
+          </Key>
+          <Property Name="RightCount" Type="number" Precision="38" Scale="0" />
+          <Property Name="WrongCount" Type="number" Precision="38" Scale="0" />
+          <Property Name="log_date" Type="date" Nullable="false" />
+          <Property Name="LogID" Type="varchar2" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <!--생성 중 오류 발생:
+경고 6002: 테이블/뷰 'CROSSWORD.PuzzleInfo'에 기본 키가 정의되지 않았습니다. 키가 유추되었고 읽기 전용 테이블/뷰로 정의되었습니다.-->
+        <EntityType Name="PuzzleInfo">
+          <Key>
+            <PropertyRef Name="StartCol" />
+            <PropertyRef Name="StartRow" />
+            <PropertyRef Name="ColOrRow" />
+            <PropertyRef Name="QNum" />
+            <PropertyRef Name="QType" />
+          </Key>
+          <Property Name="StartCol" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="StartRow" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ColOrRow" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="QNum" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="QType" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="PuzzleID" Type="varchar2" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WordClue">
+          <Key>
+            <PropertyRef Name="WordClueID" />
+          </Key>
+          <Property Name="word" Type="varchar2" MaxLength="100" Nullable="false" />
+          <Property Name="clue" Type="varchar2" MaxLength="500" Nullable="false" />
+          <Property Name="WordClueID" Type="varchar2" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="Log" EntityType="Self.Log" Schema="CROSSWORD" store:Type="Tables" />
+          <EntitySet Name="WordClue" EntityType="Self.WordClue" Schema="CROSSWORD" store:Type="Tables" />
+          <EntitySet Name="PuzzleInfo" EntityType="Self.PuzzleInfo" store:Type="Tables" store:Schema="CROSSWORD">
+            <DefiningQuery>SELECT 
+"PuzzleInfo"."StartCol" AS "StartCol", 
+"PuzzleInfo"."StartRow" AS "StartRow", 
+"PuzzleInfo"."ColOrRow" AS "ColOrRow", 
+"PuzzleInfo"."QNum" AS "QNum", 
+"PuzzleInfo"."QType" AS "QType", 
+"PuzzleInfo"."PuzzleID" AS "PuzzleID"
+FROM "CROSSWORD"."PuzzleInfo" "PuzzleInfo"</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="LogID" />
+          </Key>
+          <Property Name="RightCount" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="WrongCount" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="log_date" Type="DateTime" Nullable="false" />
+          <Property Name="LogID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WordClue">
+          <Key>
+            <PropertyRef Name="WordClueID" />
+          </Key>
+          <Property Name="word" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="clue" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="WordClueID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PuzzleInfo">
+          <Key>
+            <PropertyRef Name="StartCol" />
+            <PropertyRef Name="StartRow" />
+            <PropertyRef Name="ColOrRow" />
+            <PropertyRef Name="QNum" />
+            <PropertyRef Name="QType" />
+          </Key>
+          <Property Name="StartCol" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="StartRow" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ColOrRow" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="QNum" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="QType" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="PuzzleID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Log" EntityType="Self.Log" />
+          <EntitySet Name="WordClue" EntityType="Self.WordClue" />
+          <EntitySet Name="PuzzleInfo" EntityType="Self.PuzzleInfo" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Log">
+            <EntityTypeMapping TypeName="Model.Log">
+              <MappingFragment StoreEntitySet="Log">
+                <ScalarProperty Name="RightCount" ColumnName="RightCount" />
+                <ScalarProperty Name="WrongCount" ColumnName="WrongCount" />
+                <ScalarProperty Name="log_date" ColumnName="log_date" />
+                <ScalarProperty Name="LogID" ColumnName="LogID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WordClue">
+            <EntityTypeMapping TypeName="Model.WordClue">
+              <MappingFragment StoreEntitySet="WordClue">
+                <ScalarProperty Name="word" ColumnName="word" />
+                <ScalarProperty Name="clue" ColumnName="clue" />
+                <ScalarProperty Name="WordClueID" ColumnName="WordClueID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PuzzleInfo">
+            <EntityTypeMapping TypeName="Model.PuzzleInfo">
+              <MappingFragment StoreEntitySet="PuzzleInfo">
+                <ScalarProperty Name="StartCol" ColumnName="StartCol" />
+                <ScalarProperty Name="StartRow" ColumnName="StartRow" />
+                <ScalarProperty Name="ColOrRow" ColumnName="ColOrRow" />
+                <ScalarProperty Name="QNum" ColumnName="QNum" />
+                <ScalarProperty Name="QType" ColumnName="QType" />
+                <ScalarProperty Name="PuzzleID" ColumnName="PuzzleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="없음" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

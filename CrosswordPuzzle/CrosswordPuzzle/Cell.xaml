@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="CrosswordPuzzle.Cell"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CrosswordPuzzle"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="100">
+    <UserControl.Resources>
+        <ResourceDictionary Source="resources.xaml"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Label Name="BasicCell" 
+               Visibility="Visible"
+               Style="{StaticResource Cell_basic}"/>
+
+        <TextBox Name="InputCell" 
+                 Visibility="Collapsed"
+                 MaxLength="1"
+                 Style="{StaticResource Cell_Input}"/>
+
+        <Label Name="WordNum" Content=""
+               Visibility="Collapsed"
+               Style="{StaticResource LabelNum}"/>
+    </Grid>
+
+
+</UserControl>
